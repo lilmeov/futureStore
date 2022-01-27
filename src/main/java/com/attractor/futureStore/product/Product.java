@@ -20,7 +20,6 @@ public class Product {
   private String description;
   private float price;
   @ManyToOne
+  @JoinColumn(name = "type_id")
   private ProductType productType;
-
-
 }
