@@ -16,4 +16,14 @@ public class ProductController {
         return productService.getAll();
     }
 
+    @GetMapping("/getByType/{type}")
+    public List<Product> getByType(@PathVariable String type){
+        return productService.getByType(type);
+    }
+
+    @GetMapping("/getById/{id}")
+    public Product getById(@PathVariable Integer id){
+        return productService.getById(id);
+    }
+
 }
