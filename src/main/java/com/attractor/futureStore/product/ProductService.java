@@ -22,4 +22,11 @@ public class ProductService {
         return productRepository.getProductById(id);
     }
 
+    public List<Product> getByPrice(float price){
+        return productRepository.getProductsByPrice(price);
+    }
+
+    public List<Product> getByName(String prodName){
+        return productRepository.getProductsByName(prodName);
+    }
 }

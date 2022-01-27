@@ -9,4 +9,6 @@ import java.util.List;
 public interface ProductRepository extends CrudRepository<Product, Integer> {
     List<Product> getProductsByProductTypeType (String type);
     Product getProductById (Integer id);
+    List<Product> getProductsByPrice (float price);
+    List<Product> getProductsByName (String name);
 }

@@ -26,4 +26,14 @@ public class ProductController {
         return productService.getById(id);
     }
 
+    @GetMapping("/getByProductName/{name}")
+    public List<Product> getByName (@PathVariable String name){
+        return productService.getByName(name);
+    }
+
+    @GetMapping("/getByProductPrice/{price}")
+    public List<Product> getByPrice (@PathVariable float price){
+        return productService.getByPrice(price);
+    }
+
 }
