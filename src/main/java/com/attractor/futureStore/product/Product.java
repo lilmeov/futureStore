@@ -18,7 +18,7 @@ public class Product {
   @NotBlank(message = "Name must be written")
   private String name;
   @Column(length = 200)
-  @NotBlank(message = "Provide image (link in my case) of your product")
+  @NotBlank(message = "Provide image (link in this case) of your product")
   private String image;
   @PositiveOrZero
   private int amount;
