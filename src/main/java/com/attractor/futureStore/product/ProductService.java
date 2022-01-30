@@ -29,4 +29,8 @@ public class ProductService {
     public List<Product> getByName(String prodName){
         return productRepository.getProductsByName(prodName);
     }
+
+    public Product saveNewProd(Product product){
+        return productRepository.save(product);
+    }
 }

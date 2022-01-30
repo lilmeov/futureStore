@@ -1,13 +1,17 @@
 package com.attractor.futureStore.product;
 
+import com.attractor.futureStore.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/")
 @RequiredArgsConstructor
+@Validated
 public class ProductController {
     private final ProductService productService;
 
@@ -36,4 +40,8 @@ public class ProductController {
         return productService.getByPrice(price);
     }
 
+    @PostMapping("/saveProduct")
+    public Product saveNewProduct(@RequestBody @Valid Product product){
+        return productService.saveNewProd(product);
+    }
 }

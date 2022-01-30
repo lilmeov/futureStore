@@ -1,11 +1,15 @@
 package com.attractor.futureStore.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
     private final UserService userService;
 
@@ -15,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping("/saveUser")
-    public User saveNewUser(@RequestBody User user){
+    public User saveNewUser(@RequestBody @Valid User user){
         return userService.saveNewUser(user);
     }
 }
