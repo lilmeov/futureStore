@@ -13,10 +13,10 @@ public class Product {
   private Integer id;
   @Column(length = 100)
   private String name;
-  @Column(length = 123)
+  @Column(length = 200)
   private String image;
   private int amount;
-  @Column(length = 128)
+  @Column(length = 250)
   private String description;
   private float price;
   @ManyToOne
