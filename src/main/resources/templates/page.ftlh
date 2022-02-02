@@ -8,11 +8,7 @@
 <body>
 
 <div>
-    You are serching : <b>${name}</b>
-</div>
-
-<div>
-    <b>${button}</b>
+    You are searching : <b>${name}</b>
 </div>
 
 <#assign a = "${button}">
