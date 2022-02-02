@@ -15,6 +15,16 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
+    @GetMapping("/ByBetweenPrices/{minPrice}")
+    public List<Product> getByBetweenPrices(@PathVariable float minPrice, @RequestParam float maxPrice){
+        return productService.getByBetweenPrice(minPrice, maxPrice);
+    }
+
+    @GetMapping("/getBySeveralCriteria/{type}")
+    public List<Product> getBySeveralCriteria(@PathVariable String type, @RequestParam String name, float min, float max){
+        return productService.getBySeveralCriteria(type, name, min, max);
+    }
+
     @GetMapping("/getAllProducts")
     public List<Product> getAll(){
         return productService.getAll();
@@ -24,6 +34,7 @@ public class ProductController {
     public List<Product> getByType(@PathVariable String type){
         return productService.getByType(type);
     }
+
 
     @GetMapping("/getById/{id}")
     public Product getById(@PathVariable Integer id){

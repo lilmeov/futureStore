@@ -11,4 +11,8 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     Product getProductById (Integer id);
     List<Product> getProductsByPrice (float price);
     List<Product> getProductsByName (String name);
+
+    List<Product> getProductsByPriceBetween(float minPrice, float maxPrice);
+
+    List<Product> getProductsByProductTypeTypeAndNameAndPriceBetween(String type, String name, float min, float max);
 }
