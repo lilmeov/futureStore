@@ -5,6 +5,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -21,5 +22,10 @@ public class UserController {
     @PostMapping("/saveUser")
     public User saveNewUser(@RequestBody @Valid User user){
         return userService.saveNewUser(user);
+    }
+
+    @GetMapping("/findAll")
+    public List<User> getAll(){
+        return userService.getAllUsers();
     }
 }

@@ -3,6 +3,8 @@ package com.attractor.futureStore.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -14,5 +16,9 @@ public class UserService {
 
     public User saveNewUser(User user){
         return userRepository.save(user);
+    }
+
+    public List<User> getAllUsers(){
+        return (List<User>) userRepository.findAll();
     }
 }

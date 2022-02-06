@@ -1,9 +1,13 @@
 package com.attractor.futureStore.product;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,9 +22,9 @@ public class ProductService {
         return productRepository.getProductsByPriceBetween(minPrice, maxPrice);
     }
 
-    public List<Product> getAll(){
-        return (List<Product>) productRepository.findAll();
-    }
+//    public Page<Product> getAll(@RequestParam Optional<Integer> page){
+//        return productRepository.findAll(PageRequest.of(page.orElse(0),5));
+//    }
 
     public List<Product> getByType(String type){
         return productRepository.getProductsByProductTypeType(type);

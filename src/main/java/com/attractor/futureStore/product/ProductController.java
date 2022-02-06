@@ -2,11 +2,16 @@ package com.attractor.futureStore.product;
 
 import com.attractor.futureStore.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/")
@@ -14,6 +19,12 @@ import java.util.List;
 @Validated
 public class ProductController {
     private final ProductService productService;
+    private final ProductRepository productRepository;
+
+
+
+
+
 
     @GetMapping("/ByBetweenPrices/{minPrice}")
     public List<Product> getByBetweenPrices(@PathVariable float minPrice, @RequestParam float maxPrice){
@@ -25,10 +36,10 @@ public class ProductController {
         return productService.getBySeveralCriteria(type, name, min, max);
     }
 
-    @GetMapping("/getAllProducts")
-    public List<Product> getAll(){
-        return productService.getAll();
-    }
+//    @GetMapping("/getAllProducts")
+//    public Page<Product> getAll(@RequestParam Optional<Integer> page){
+//        return productService.getAll(page);
+//    }
 
     @GetMapping("/getByType/{type}")
     public List<Product> getByType(@PathVariable String type){

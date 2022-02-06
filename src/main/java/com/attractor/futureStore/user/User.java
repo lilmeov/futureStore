@@ -19,7 +19,7 @@ public class User {
     private Integer id;
     @Column(length = 50)
     @Size(min = 2, max = 30, message = "enter appropriate amount of letters, min 2")
-    private String name;
+    private String username;
     @Column(length = 100)
     @Email(message = "Enter a valid email")
     @NotBlank(message = "email should have a value")
@@ -29,8 +29,8 @@ public class User {
     @Size(min = 6, message = "password should at least consist of 6 characters")
     private String password;
 
-    public User(String name, String email, String password) {
-        this.name = name;
+    public User(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
     }
