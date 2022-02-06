@@ -3,17 +3,22 @@ package com.attractor.futureStore.general;
 import com.attractor.futureStore.product.Product;
 import com.attractor.futureStore.product.ProductRepository;
 import com.attractor.futureStore.product.ProductService;
+import com.attractor.futureStore.user.User;
+import com.attractor.futureStore.user.UserRepository;
+import com.attractor.futureStore.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -22,6 +27,8 @@ import java.util.stream.IntStream;
 @RequestMapping
 @RequiredArgsConstructor
 public class ApplicationController {
+    private final UserService userService;
+//    private final UserRepository userRepository;
     private final ProductService productService;
     private final ProductRepository productRepository;
 
@@ -51,6 +58,11 @@ public class ApplicationController {
         return "indexx";
     }
 
+    @GetMapping("/login")
+    public String getLoginPage(){
+        return "login";
+    }
+
     @GetMapping("/register")
     public String getRegistrationPage(){
         return "register";
@@ -61,6 +73,28 @@ public class ApplicationController {
         return "severalForm";
     }
 
+    @GetMapping("/registerUser")
+    public String registerNewUser(@RequestParam(value = "username") String username,
+                                  @RequestParam(value = "email") String email,
+                                  @RequestParam(value = "password") String password,
+                                  Model model) throws FileAlreadyExistsException {
+
+        User user = userService.getByUsername(username);
+
+        if (user == null){
+            BCryptPasswordEncoder b = new BCryptPasswordEncoder();
+            String encoded = b.encode(password);
+
+            User newUser = new User(username, email, encoded, true, "USER");
+            userService.saveNewUser(newUser);
+        }else {
+            throw new FileAlreadyExistsException("User already exist");
+        }
+
+        return "redirect:/";
+    }
+
+///registerUser
 
     @GetMapping("/several")
     public String getSev(@RequestParam(value = "prod_type") String prodType,

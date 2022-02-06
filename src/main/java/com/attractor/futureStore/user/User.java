@@ -28,10 +28,18 @@ public class User {
     @NotBlank(message = "password should have a value")
     @Size(min = 6, message = "password should at least consist of 6 characters")
     private String password;
+    private boolean enabled;
+    private String role;
 
-    public User(String username, String email, String password) {
+    public User(@Size(min = 2, max = 30, message = "enter appropriate amount of letters, min 2") String username,
+                @Email(message = "Enter a valid email")
+                @NotBlank(message = "email should have a value") String email,
+                @NotBlank(message = "password should have a value")
+                @Size(min = 6, message = "password should at least consist of 6 characters") String password, boolean enabled, String role) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.enabled = enabled;
+        this.role = role;
     }
 }

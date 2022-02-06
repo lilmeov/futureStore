@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.nio.file.FileAlreadyExistsException;
+
 
 @ControllerAdvice
 public class MyControllerAdvice {
@@ -17,6 +19,9 @@ public class MyControllerAdvice {
         return new ResponseEntity<String>("Something went wrong", HttpStatus.BAD_REQUEST);
     }
 
-//    Later On More Exceptions Will Be Specified
+    @ExceptionHandler(FileAlreadyExistsException.class)
+    public ResponseEntity<String> handleAlreadyExistsException(Exception e){
+        return new ResponseEntity<String>("This username already registered in database. Pls try to register with another nickname", HttpStatus.BAD_REQUEST);
+    }
 
 }
