@@ -21,7 +21,7 @@ public class MyControllerAdvice {
 
     @ExceptionHandler(FileAlreadyExistsException.class)
     public ResponseEntity<String> handleAlreadyExistsException(Exception e){
-        return new ResponseEntity<String>("This username already registered in database. Pls try to register with another nickname", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<String>("This username is already registered in database. Pls try to register with another nickname", HttpStatus.BAD_REQUEST);
     }
 
 }

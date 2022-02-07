@@ -58,10 +58,10 @@ public class ApplicationController {
         return "indexx";
     }
 
-    @GetMapping("/login")
-    public String getLoginPage(){
-        return "login";
-    }
+//    @GetMapping("/login")
+//    public String getLoginPage(){
+//        return "login";
+//    }
 
     @GetMapping("/register")
     public String getRegistrationPage(){

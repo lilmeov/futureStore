@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -25,5 +26,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usersByUsernameQuery(fetchUserQuery)
                 .authoritiesByUsernameQuery(fetchRoleQuery)
                 .passwordEncoder(bCryptPasswordEncoder);
+    }
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+                .authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/register").permitAll();
     }
 }
