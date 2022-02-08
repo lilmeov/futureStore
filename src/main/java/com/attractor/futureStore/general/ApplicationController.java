@@ -11,6 +11,9 @@ import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.nio.file.FileAlreadyExistsException;
+import java.rmi.NoSuchObjectException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class ApplicationController {
     private final UserService userService;
@@ -58,10 +62,29 @@ public class ApplicationController {
         return "indexx";
     }
 
+//    @GetMapping("/loginto")
+//    public String getLoginPage(@RequestParam(value = "username") String username,
+//                               @RequestParam(value = "password") String password) throws NoSuchObjectException {
+//        User user = userService.getByUsername(username);
+//
+//        if (user == null){
+//            return "redirect:/register";
+//        }
+//
+//        BCryptPasswordEncoder b = new BCryptPasswordEncoder();
+//        String coded = b.encode(password);
+//
+//        if (user.getPassword() == coded){
+//            return "redirect:/";
+//        }
+//        return "redirect:/";
+//    }
+
 //    @GetMapping("/login")
 //    public String getLoginPage(){
 //        return "login";
-//    }
+//    };
+
 
     @GetMapping("/register")
     public String getRegistrationPage(){
@@ -108,6 +131,15 @@ public class ApplicationController {
         model.addAttribute("products", products);
         return "page";
     }
+
+//    @GetMapping("/login")
+//    public String showLoginPage(){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication == null || authentication instanceof AnonymousAuthenticationToken){
+//            return "login";
+//        }
+//        return "redirect:/";
+//    }
 
 //    @GetMapping("/AbsAllProd")
 //    public String getAllProd(Pageable pageable,Optional<Integer> page, Model model){

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.nio.file.FileAlreadyExistsException;
+import java.rmi.NoSuchObjectException;
 
 
 @ControllerAdvice
@@ -23,5 +24,10 @@ public class MyControllerAdvice {
     public ResponseEntity<String> handleAlreadyExistsException(Exception e){
         return new ResponseEntity<String>("This username is already registered in database. Pls try to register with another nickname", HttpStatus.BAD_REQUEST);
     }
+
+//    @ExceptionHandler(NoSuchObjectException.class)
+//    public ResponseEntity<String> handleNoSuchObjectException(Exception e){
+//        return new ResponseEntity<String>("No such user. U should regis", HttpStatus.BAD_REQUEST);
+//    }
 
 }

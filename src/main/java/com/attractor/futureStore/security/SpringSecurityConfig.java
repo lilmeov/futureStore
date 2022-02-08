@@ -27,11 +27,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery(fetchRoleQuery)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-                .authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/register").permitAll();
-    }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+////                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+//                .authorizeRequests()
+//                .antMatchers("/").hasAnyAuthority("USER")
+//                .antMatchers("/login").permitAll()
+//                .antMatchers("/register").permitAll();
+//    }
 }
