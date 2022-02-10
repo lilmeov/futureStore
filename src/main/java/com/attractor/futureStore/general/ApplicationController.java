@@ -1,19 +1,13 @@
 package com.attractor.futureStore.general;
 
+import com.attractor.futureStore.joinTable.ProdAndUser;
+import com.attractor.futureStore.joinTable.ProdAndUserService;
 import com.attractor.futureStore.product.Product;
 import com.attractor.futureStore.product.ProductRepository;
 import com.attractor.futureStore.product.ProductService;
 import com.attractor.futureStore.user.User;
-import com.attractor.futureStore.user.UserRepository;
 import com.attractor.futureStore.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,18 +15,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.nio.file.FileAlreadyExistsException;
-import java.rmi.NoSuchObjectException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.IntStream;
+
 
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
 public class ApplicationController {
     private final UserService userService;
-//    private final UserRepository userRepository;
+    private final ProdAndUserService prodAndUserService;
     private final ProductService productService;
     private final ProductRepository productRepository;
 
@@ -96,12 +90,14 @@ public class ApplicationController {
         return "severalForm";
     }
 
+
+    String userName;
+
     @GetMapping("/registerUser")
     public String registerNewUser(@RequestParam(value = "username") String username,
                                   @RequestParam(value = "email") String email,
                                   @RequestParam(value = "password") String password,
-                                  Model model) throws FileAlreadyExistsException {
-
+                                  Model model, HttpSession session) throws FileAlreadyExistsException {
         User user = userService.getByUsername(username);
 
         if (user == null){
@@ -110,14 +106,63 @@ public class ApplicationController {
 
             User newUser = new User(username, email, encoded, true, "USER");
             userService.saveNewUser(newUser);
+            User currentUser = userService.getByUsername(username);
+            userName = currentUser.getUsername();
+
+            int currentUserId = currentUser.getId();
+            session.setAttribute(userName, currentUserId);
         }else {
             throw new FileAlreadyExistsException("User already exist");
         }
+        return "redirect:/";
+    }
+
+
+
+    List<Product> myProducts;
+
+    @GetMapping("/putProdInCart")
+    public String getProdValue(@RequestParam(value = "prodValue") Integer prodId, HttpSession session){
+        Integer userId = (Integer) session.getAttribute(userName);
+        if (userId==null){
+            return "redirect:/register";
+        }
+
+        Product chosenProduct = productService.getById(prodId);
+//        User currentUser = userService.getUserById(userId);
+
+        ProdAndUser prodAndUser = new ProdAndUser(prodId, userId);
+        prodAndUserService.saveProdAndUser(prodAndUser);
+
+
+//        Product chsnProduct = productService.getById(prodId);
+
+//        List<Product> products = (List<Product>) session.getAttribute("q");
+//
+//        System.out.println(products);
+
+
+//        User currentUser = userService.getUserById(userId);
+//        String userName1 = currentUser.getUsername();
+//
+//
+//
+//        myProducts = new ArrayList<>();
+//        myProducts.add(chosenProduct);
+//
+//
+//
+////        System.out.println(myProducts);
+//        System.out.println(myProducts);
+
+//        session.setAttribute(userName1, myProducts);
+//
+//        System.out.println(session.getAttribute(userName));
 
         return "redirect:/";
     }
 
-///registerUser
+
 
     @GetMapping("/several")
     public String getSev(@RequestParam(value = "prod_type") String prodType,

@@ -1,5 +1,7 @@
 package com.attractor.futureStore.user;
 
+import com.attractor.futureStore.joinTable.ProdAndUser;
+import com.attractor.futureStore.product.Product;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
@@ -8,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Data
 @Entity
@@ -30,6 +33,10 @@ public class User {
     private String password;
     private boolean enabled;
     private String role;
+
+//    @OneToMany(mappedBy = "user")
+//    Set<ProdAndUser> buyers;
+
 
     public User(@Size(min = 2, max = 30, message = "enter appropriate amount of letters, min 2") String username,
                 @Email(message = "Enter a valid email")

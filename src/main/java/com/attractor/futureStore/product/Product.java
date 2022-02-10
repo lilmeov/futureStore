@@ -1,10 +1,13 @@
 package com.attractor.futureStore.product;
 
+import com.attractor.futureStore.joinTable.ProdAndUser;
+import com.attractor.futureStore.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -31,6 +34,11 @@ public class Product {
   @ManyToOne
   @JoinColumn(name = "type_id")
   private ProductType productType;
+
+
+//  @OneToMany(mappedBy = "product")
+//  Set<ProdAndUser> buyers;
+
 
   public Product(@NotBlank String name, String image, int amount, @NotBlank String description, @PositiveOrZero float price, ProductType productType) {
     this.name = name;

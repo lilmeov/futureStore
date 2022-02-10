@@ -21,8 +21,10 @@ public class ProductController {
     private final ProductService productService;
     private final ProductRepository productRepository;
 
-
-
+    @GetMapping("/allProdByCommonTable")
+    public List<Product> getByType(){
+        return productRepository.findAllUsersInCommonTable();
+    }
 
 
 
