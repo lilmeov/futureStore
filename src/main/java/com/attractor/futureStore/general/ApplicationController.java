@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
@@ -122,42 +124,31 @@ public class ApplicationController {
     List<Product> myProducts;
 
     @GetMapping("/putProdInCart")
-    public String getProdValue(@RequestParam(value = "prodValue") Integer prodId, HttpSession session){
+    public String getProdValue(@RequestParam(value = "prodValue") Integer prodId, HttpSession session, Model model, HttpServletRequest request){
         Integer userId = (Integer) session.getAttribute(userName);
         if (userId==null){
             return "redirect:/register";
         }
 
         Product chosenProduct = productService.getById(prodId);
-//        User currentUser = userService.getUserById(userId);
 
         ProdAndUser prodAndUser = new ProdAndUser(prodId, userId);
         prodAndUserService.saveProdAndUser(prodAndUser);
 
 
-//        Product chsnProduct = productService.getById(prodId);
 
-//        List<Product> products = (List<Product>) session.getAttribute("q");
-//
-//        System.out.println(products);
+        Product chsnProduct = productService.getById(prodId);
+
+        session.setAttribute("q", chosenProduct);
+
+        List<Product> msgs = (List<Product>) request.getSession().getAttribute("MY_MESSAGES");
+        if(msgs == null) {
+            msgs = new ArrayList<>();
+            request.getSession().setAttribute("MY_MESSAGES", msgs);
+        }
+        msgs.add(chsnProduct);
 
 
-//        User currentUser = userService.getUserById(userId);
-//        String userName1 = currentUser.getUsername();
-//
-//
-//
-//        myProducts = new ArrayList<>();
-//        myProducts.add(chosenProduct);
-//
-//
-//
-////        System.out.println(myProducts);
-//        System.out.println(myProducts);
-
-//        session.setAttribute(userName1, myProducts);
-//
-//        System.out.println(session.getAttribute(userName));
 
         return "redirect:/";
     }
