@@ -15,19 +15,19 @@ import java.rmi.NoSuchObjectException;
 @ControllerAdvice
 public class MyControllerAdvice {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleAllKindOfException(Exception e){
-        return new ResponseEntity<String>("Something went wrong", HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<String> handleAllKindOfException(Exception e){
+//        return new ResponseEntity<String>("Something went wrong", HttpStatus.BAD_REQUEST);
+//    }
 
     @ExceptionHandler(FileAlreadyExistsException.class)
     public ResponseEntity<String> handleAlreadyExistsException(Exception e){
         return new ResponseEntity<String>("This username is already registered in database. Pls try to register with another nickname", HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(NoSuchObjectException.class)
-//    public ResponseEntity<String> handleNoSuchObjectException(Exception e){
-//        return new ResponseEntity<String>("No such user. U should regis", HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler(NoSuchObjectException.class)
+    public ResponseEntity<String> handleNoSuchObjectException(Exception e){
+        return new ResponseEntity<String>("No such user. U should register", HttpStatus.BAD_REQUEST);
+    }
 
 }

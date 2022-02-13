@@ -18,22 +18,18 @@ public class ProdAndUser{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(name = "product_id")
-    Integer productId;
-//    @ManyToOne
-//    @JoinColumn(name = "product_id")
-//    Product product;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    Product product;
 
-    @Column(name = "user_id")
-    Integer userId;
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
 
-
-    public ProdAndUser(Integer productId, Integer userId) {
-        this.productId = productId;
-        this.userId = userId;
+    public ProdAndUser(Product product, User user) {
+        this.product = product;
+        this.user = user;
     }
+
 }
 

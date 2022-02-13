@@ -36,8 +36,6 @@ public class Product {
   private ProductType productType;
 
 
-//  @OneToMany(mappedBy = "product")
-//  Set<ProdAndUser> buyers;
 
 
   public Product(@NotBlank String name, String image, int amount, @NotBlank String description, @PositiveOrZero float price, ProductType productType) {

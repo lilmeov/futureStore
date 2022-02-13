@@ -22,9 +22,6 @@ public class ProductService {
         return productRepository.getProductsByPriceBetween(minPrice, maxPrice);
     }
 
-//    public Page<Product> getAll(@RequestParam Optional<Integer> page){
-//        return productRepository.findAll(PageRequest.of(page.orElse(0),5));
-//    }
 
     public List<Product> getByType(String type){
         return productRepository.getProductsByProductTypeType(type);

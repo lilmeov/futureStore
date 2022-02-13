@@ -14,10 +14,9 @@
 
 <#assign a = "${button}">
 
-
 <#if a == "prodType">
 <#list prodTypes as product>
-<div style="padding-top: 60px">
+<div style="padding-top: 60px" class="shift">
     <form method="get" action="/putProdInCart">
         <div class="card" style="width: 18rem;">
             <img src="${product.image}" class="card-img-top" alt="...">
@@ -34,8 +33,8 @@
 </#list>
 <#elseif a == "prodName">
 <#list products as product>
-<div style="padding-top: 60px">
-    <form method="get" action="/putProdInCart">
+<div style="padding-top: 60px" class="shift">
+    <form method="get" action="/putProdInCart" >
         <div class="card" style="width: 18rem;">
             <img src="${product.image}" class="card-img-top" alt="...">
             <div class="card-body">
@@ -51,7 +50,7 @@
 </#list>
 <#elseif a == "prodSeveral">
     <#list products as product>
-        <div style="padding-top: 60px">
+        <div style="padding-top: 60px" class="shift">
             <form method="get" action="/putProdInCart">
                 <div class="card" style="width: 18rem;">
                     <img src="${product.image}" class="card-img-top" alt="...">
@@ -60,17 +59,16 @@
                         <b>price: ${product.price} $</b>
                         <p class="card-text">description: ${product.description}</p>
                         <p class="card-text">amount: ${product.amount}</p>
-                        <button name="prodValue" value="${product.id}" type="submit" class="btn btn-outline-success">Get</button>
                     </div>
                 </div>
             </form>
         </div>
     </#list>
-<#elseif a == 4>
-    x is 4
-<#else>
-    x is not 1 nor 2 nor 3 nor 4
 </#if>
-
 </body>
+<style>
+    .shift{
+        padding-left: 550px;
+    }
+</style>
 </html>

@@ -34,8 +34,6 @@ public class User {
     private boolean enabled;
     private String role;
 
-//    @OneToMany(mappedBy = "user")
-//    Set<ProdAndUser> buyers;
 
 
     public User(@Size(min = 2, max = 30, message = "enter appropriate amount of letters, min 2") String username,

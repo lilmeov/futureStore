@@ -1,6 +1,7 @@
 package com.attractor.futureStore.general;
 
 import com.attractor.futureStore.joinTable.ProdAndUser;
+import com.attractor.futureStore.joinTable.ProdAndUserRepository;
 import com.attractor.futureStore.joinTable.ProdAndUserService;
 import com.attractor.futureStore.product.Product;
 import com.attractor.futureStore.product.ProductRepository;
@@ -8,19 +9,19 @@ import com.attractor.futureStore.product.ProductService;
 import com.attractor.futureStore.user.User;
 import com.attractor.futureStore.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.ObjectNotFoundException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.nio.file.FileAlreadyExistsException;
-import java.util.ArrayList;
+import java.rmi.NoSuchObjectException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -30,7 +31,12 @@ public class ApplicationController {
     private final UserService userService;
     private final ProdAndUserService prodAndUserService;
     private final ProductService productService;
+    private final ProdAndUserRepository prodAndUserRepository;
     private final ProductRepository productRepository;
+
+    String userName;
+    Integer userId1;
+
 
     @GetMapping("/hello")
     public String getParam(@RequestParam(value = "prod_name") String prodName,
@@ -54,32 +60,39 @@ public class ApplicationController {
 
 
     @GetMapping("/")
-    public String getIndex(){
+    public String getIndex(Model model){
+        if (userId1 != null){
+            model.addAttribute("hi", userId1);
+        }else {
+            model.addAttribute("hi", "NeedRegistration");
+        }
         return "indexx";
     }
 
-//    @GetMapping("/loginto")
-//    public String getLoginPage(@RequestParam(value = "username") String username,
-//                               @RequestParam(value = "password") String password) throws NoSuchObjectException {
-//        User user = userService.getByUsername(username);
-//
-//        if (user == null){
-//            return "redirect:/register";
-//        }
-//
-//        BCryptPasswordEncoder b = new BCryptPasswordEncoder();
-//        String coded = b.encode(password);
-//
-//        if (user.getPassword() == coded){
-//            return "redirect:/";
-//        }
-//        return "redirect:/";
-//    }
+    @GetMapping("/myCart/NeedRegistration")
+    public String getCartRestriction(){
+        return "redirect:/register";
+    };
 
-//    @GetMapping("/login")
-//    public String getLoginPage(){
-//        return "login";
-//    };
+
+
+    @GetMapping("/login")
+    public String getLoginPage(){
+        return "login";
+    };
+
+
+
+    ////////////////////////////////////////////
+
+    @GetMapping("/myCart/{userId}")
+    public String getProductsInCart(@PathVariable Integer userId, Model model){
+        List<ProdAndUser> prodAndUsers = prodAndUserRepository.getProdAndUsersByUserId(userId);
+        List<Product> pAndU = prodAndUsers.stream().map(x->x.getProduct()).collect(Collectors.toList());
+        model.addAttribute("productsInCart", pAndU);
+        return "cart";
+    }
+
 
 
     @GetMapping("/register")
@@ -93,7 +106,6 @@ public class ApplicationController {
     }
 
 
-    String userName;
 
     @GetMapping("/registerUser")
     public String registerNewUser(@RequestParam(value = "username") String username,
@@ -110,9 +122,9 @@ public class ApplicationController {
             userService.saveNewUser(newUser);
             User currentUser = userService.getByUsername(username);
             userName = currentUser.getUsername();
+            userId1 = currentUser.getId();
 
-            int currentUserId = currentUser.getId();
-            session.setAttribute(userName, currentUserId);
+            session.setAttribute(userName, userId1);
         }else {
             throw new FileAlreadyExistsException("User already exist");
         }
@@ -121,7 +133,6 @@ public class ApplicationController {
 
 
 
-    List<Product> myProducts;
 
     @GetMapping("/putProdInCart")
     public String getProdValue(@RequestParam(value = "prodValue") Integer prodId, HttpSession session, Model model, HttpServletRequest request){
@@ -131,23 +142,10 @@ public class ApplicationController {
         }
 
         Product chosenProduct = productService.getById(prodId);
+        User currentUsr = userService.getUserById(userId);
 
-        ProdAndUser prodAndUser = new ProdAndUser(prodId, userId);
+        ProdAndUser prodAndUser = new ProdAndUser(chosenProduct, currentUsr);
         prodAndUserService.saveProdAndUser(prodAndUser);
-
-
-
-        Product chsnProduct = productService.getById(prodId);
-
-        session.setAttribute("q", chosenProduct);
-
-        List<Product> msgs = (List<Product>) request.getSession().getAttribute("MY_MESSAGES");
-        if(msgs == null) {
-            msgs = new ArrayList<>();
-            request.getSession().setAttribute("MY_MESSAGES", msgs);
-        }
-        msgs.add(chsnProduct);
-
 
 
         return "redirect:/";
@@ -165,36 +163,10 @@ public class ApplicationController {
         model.addAttribute("button", prodButton);
         List<Product> products = productService.getBySeveralCriteria(prodType, prodName, min, max);
         model.addAttribute("products", products);
+
         return "page";
     }
 
-//    @GetMapping("/login")
-//    public String showLoginPage(){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication == null || authentication instanceof AnonymousAuthenticationToken){
-//            return "login";
-//        }
-//        return "redirect:/";
-//    }
 
-//    @GetMapping("/AbsAllProd")
-//    public String getAllProd(Pageable pageable,Optional<Integer> page, Model model){
-//        Page<Product> products = productService.getAll(page);
-//        model.addAttribute("products", products);
-//        model.addAttribute("pageable", pageable);
-//        return "p";
-//    }
-
-//    @GetMapping("/pagination")
-//    public String listProducts(Model model,
-//                               @RequestParam (value = "size", required = false, defaultValue = "5") Integer size,
-//                               @RequestParam (value = "page", required = false, defaultValue = "6") Integer page){
-//        Page<Product> pageProducts = productRepository.findAll(PageRequest.of(page, size));
-//
-//        model.addAttribute("products", pageProducts);
-//        model.addAttribute("numbers", IntStream.range(0, pageProducts.getTotalPages()).toArray());
-//
-//        return "p";
-//    }
 
 }

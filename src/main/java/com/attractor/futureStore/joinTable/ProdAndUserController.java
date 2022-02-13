@@ -1,5 +1,6 @@
 package com.attractor.futureStore.joinTable;
 
+import com.attractor.futureStore.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +15,15 @@ public class ProdAndUserController {
     private final ProdAndUserRepository prodAndUserRepository;
 
 
+
+
+    //Find products that user put in cart by User's Id
     @ResponseBody
-    @GetMapping("/findBothByUserId/{id}")
-    public ProdAndUser getBothById(@PathVariable Integer id){
-        return (ProdAndUser) prodAndUserRepository.getProdAndUsersByUserId(id);
+    @GetMapping("/findByUsrId/{id}")
+    public List<ProdAndUser> getByUserId(@PathVariable Integer id){
+        return prodAndUserRepository.getProdAndUsersByUserId(id);
     }
 
-//    @ResponseBody
-//    @GetMapping("/findBothByUserId/{id}")
-//    public ProdAndUser getBothById(@PathVariable Integer id){
-//        return prodAndUserService.getBothWithUserId(id);
-//    }
 
     @ResponseBody
     @GetMapping("/allThem")
