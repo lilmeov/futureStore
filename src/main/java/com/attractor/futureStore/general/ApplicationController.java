@@ -9,8 +9,6 @@ import com.attractor.futureStore.product.ProductService;
 import com.attractor.futureStore.user.User;
 import com.attractor.futureStore.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.ObjectNotFoundException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.nio.file.FileAlreadyExistsException;
-import java.rmi.NoSuchObjectException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,6 +82,12 @@ public class ApplicationController {
 
     ////////////////////////////////////////////
 
+//    @RequestMapping("/users/{user_id}")
+//    public String getUserInfo(@PathVariable("user_id") Long userId, Principal principal){
+//        // test if userId is current principal or principal is an ADMIN
+//        ....
+//    }
+
     @GetMapping("/myCart/{userId}")
     public String getProductsInCart(@PathVariable Integer userId, Model model){
         List<ProdAndUser> prodAndUsers = prodAndUserRepository.getProdAndUsersByUserId(userId);
@@ -106,6 +109,13 @@ public class ApplicationController {
     }
 
 
+    @GetMapping("/qwerty")
+    public String getQ(){
+
+
+        return "severalForm";
+    }
+
 
     @GetMapping("/registerUser")
     public String registerNewUser(@RequestParam(value = "username") String username,
@@ -125,6 +135,7 @@ public class ApplicationController {
             userId1 = currentUser.getId();
 
             session.setAttribute(userName, userId1);
+            session.setAttribute("userId", userId1);
         }else {
             throw new FileAlreadyExistsException("User already exist");
         }
@@ -147,7 +158,6 @@ public class ApplicationController {
         ProdAndUser prodAndUser = new ProdAndUser(chosenProduct, currentUsr);
         prodAndUserService.saveProdAndUser(prodAndUser);
 
-
         return "redirect:/";
     }
 
@@ -168,5 +178,9 @@ public class ApplicationController {
     }
 
 
+    @GetMapping("/welcomePage")
+    public String hello(){
+        return "welcome";
+    }
 
 }

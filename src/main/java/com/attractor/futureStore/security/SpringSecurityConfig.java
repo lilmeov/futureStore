@@ -1,14 +1,17 @@
 package com.attractor.futureStore.security;
 
+import com.attractor.futureStore.general.ApplicationController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Role;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 @Configuration
@@ -28,15 +31,32 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery(fetchRoleQuery)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+////                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/").permitAll()
+//                .antMatchers("/Cart/saveProdAndUser").permitAll()
+//                .antMatchers("/login").permitAll()
+//                .antMatchers("/register").permitAll();
+//    }
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
         http
-//                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-                .csrf().disable()
+                .formLogin().loginPage("/login")
+                .and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/Cart/saveProdAndUser").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/register").permitAll();
+                .antMatchers("/myCart/**")
+                .fullyAuthenticated()
+                .and()
+                .httpBasic();
     }
+
+
 }

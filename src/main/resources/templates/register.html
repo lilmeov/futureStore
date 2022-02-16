@@ -11,16 +11,16 @@
 <form class="container-sm" method="get" action="/registerUser">
     <div class="mb-3">
         <label for="exampleInputUsername" class="form-label">Username</label>
-        <input name="username" type="text" class="form-control" id="exampleInputUsername" aria-describedby="usernameHelp">
+        <input name="username" type="text" class="form-control" id="exampleInputUsername" aria-describedby="usernameHelp" required>
     </div>
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+        <input name="password" type="password" class="form-control" id="exampleInputPassword1" required>
     </div>
 <!--    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
     <button type="submit" class="btn btn-primary">Register</button>

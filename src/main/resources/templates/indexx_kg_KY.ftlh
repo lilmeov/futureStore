@@ -39,7 +39,7 @@
     </nav>
 </header>
 
-    <h3 class="shift" style="padding-top: 50px"><@spring.message "type.name" /></h3>
+   <h3 class="shift" style="padding-top: 50px"><@spring.message "type.name" /></h3>
 
     <form method="get" action="/hello" class="shift">
         <input  type="text" name="prod_name" required>
@@ -69,10 +69,6 @@
         <button class="btn btn-outline-secondary" style="width: 100px; margin-top: 10px" type="submit" name="several_criteria_button" value="prodSeveral"><@spring.message "get" /></button>
     </form>
     <hr>
-
-
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
